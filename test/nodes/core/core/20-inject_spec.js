@@ -16,12 +16,16 @@
 
 var should = require("should");
 var injectNode = require("../../../../nodes/core/core/20-inject.js");
-var helper = require("../../helper.js");
+var helper = require("node-red-node-test-helper");
 
 describe('inject node', function() {
 
     before(function(done) {
         helper.startServer(done);
+    });
+
+    after(function(done) {
+        helper.stopServer(done);
     });
 
     afterEach(function() {

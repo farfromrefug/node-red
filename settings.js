@@ -23,6 +23,7 @@ module.exports = {
     uiPort: process.env.PORT || 1880,
 
     // By default, the Node-RED UI accepts connections on all IPv4 interfaces.
+    // To listen on all IPv6 addresses, set uiHost to "::",
     // The following property can be used to listen on a specific interface. For
     // example, the following would only allow connections from the local machine.
     //uiHost: "127.0.0.1",
@@ -231,6 +232,14 @@ module.exports = {
             metrics: false,
             // Whether or not to include audit events in the log output
             audit: false
+        }
+    },
+
+    // Customising the editor
+    editorTheme: {
+        projects: {
+            // To enable the Projects feature, set this value to true
+            enabled: false
         }
     }
 }

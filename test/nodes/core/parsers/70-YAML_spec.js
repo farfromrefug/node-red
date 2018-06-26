@@ -16,12 +16,16 @@
 
 var should = require("should");
 var yamlNode = require("../../../../nodes/core/parsers/70-YAML.js");
-var helper = require("../../helper.js");
+var helper = require("node-red-node-test-helper");
 
 describe('YAML node', function() {
 
     before(function(done) {
         helper.startServer(done);
+    });
+
+    after(function(done) {
+        helper.stopServer(done);
     });
 
     afterEach(function() {

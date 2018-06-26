@@ -20,7 +20,7 @@ var fs = require('fs-extra');
 var os = require('os');
 var sinon = require("sinon");
 var fileNode = require("../../../../nodes/core/storage/50-file.js");
-var helper = require("../../helper.js");
+var helper = require("node-red-node-test-helper");
 
 describe('file Nodes', function() {
 
@@ -28,7 +28,7 @@ describe('file Nodes', function() {
 
         var resourcesDir = path.join(__dirname,"..","..","..","resources");
         var fileToTest = path.join(resourcesDir,"50-file-test-file.txt");
-        var wait = 150;
+        var wait = 250;
 
         beforeEach(function(done) {
             //fs.writeFileSync(fileToTest, "File message line 1\File message line 2\n");

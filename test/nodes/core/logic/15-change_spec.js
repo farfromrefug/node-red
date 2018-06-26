@@ -17,7 +17,7 @@
 var should = require("should");
 
 var changeNode = require("../../../../nodes/core/logic/15-change.js");
-var helper = require("../../helper.js");
+var helper = require("node-red-node-test-helper");
 
 describe('change Node', function() {
 
@@ -578,7 +578,6 @@ describe('change Node', function() {
         });
 
         it('reports invalid regex', function(done) {
-            var sinon = require('sinon');
             var flow = [{"id":"changeNode1","type":"change","action":"change","property":"payload","from":"\\+**+","to":"NUMBER","reg":true,"name":"changeNode","wires":[["helperNode1"]]},
                         {id:"helperNode1", type:"helper", wires:[]}];
             helper.load(changeNode, flow, function() {

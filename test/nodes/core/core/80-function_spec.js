@@ -16,12 +16,16 @@
 
 var should = require("should");
 var functionNode = require("../../../../nodes/core/core/80-function.js");
-var helper = require("../../helper.js");
+var helper = require("node-red-node-test-helper");
 
 describe('function node', function() {
 
     before(function(done) {
         helper.startServer(done);
+    });
+
+    after(function(done) {
+        helper.stopServer(done);
     });
 
     afterEach(function() {
@@ -238,7 +242,7 @@ describe('function node', function() {
     });
 
     it('should handle and log script error', function(done) {
-        var flow = [{id:"n1",type:"function",wires:[["n2"]],func:"retunr"}];
+        var flow = [{id:"n1",type:"function",wires:[["n2"]],func:"var a = 1;\nretunr"}];
         helper.load(functionNode, flow, function() {
             var n1 = helper.getNode("n1");
             n1.receive({payload:"foo",topic: "bar"});
@@ -252,7 +256,7 @@ describe('function node', function() {
                 msg.should.have.property('level', helper.log().ERROR);
                 msg.should.have.property('id', 'n1');
                 msg.should.have.property('type', 'function');
-                msg.should.have.property('msg', 'ReferenceError: retunr is not defined (line 1, col 1)');
+                msg.should.have.property('msg', 'ReferenceError: retunr is not defined (line 2, col 1)');
                 done();
             } catch(err) {
                 done(err);
@@ -498,6 +502,22 @@ describe('function node', function() {
             n2.on("input", function(msg) {
                 msg.should.have.property('topic', 'bar');
                 msg.should.have.property('payload', 'foo');
+                done();
+            });
+            n1.receive({payload:"foo",topic: "bar"});
+        });
+    });
+
+
+    it('should use the same Date object from outside the sandbox', function(done) {
+        var flow = [{id:"n1",type:"function",wires:[["n2"]],func:"msg.payload=global.get('typeTest')(new Date());return msg;"},
+                    {id:"n2", type:"helper"}];
+        helper.load(functionNode, flow, function() {
+            var n1 = helper.getNode("n1");
+            var n2 = helper.getNode("n2");
+            n1.context().global.set("typeTest",function(d) { return d instanceof Date });
+            n2.on("input", function(msg) {
+                msg.should.have.property('payload', true);
                 done();
             });
             n1.receive({payload:"foo",topic: "bar"});

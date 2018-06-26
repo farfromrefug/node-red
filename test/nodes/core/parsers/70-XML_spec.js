@@ -16,12 +16,16 @@
 
 var should = require("should");
 var xmlNode = require("../../../../nodes/core/parsers/70-XML.js");
-var helper = require("../../helper.js");
+var helper = require("node-red-node-test-helper");
 
 describe('XML node', function() {
 
     before(function(done) {
         helper.startServer(done);
+    });
+
+    after(function(done) {
+        helper.stopServer(done);
     });
 
     afterEach(function() {

@@ -16,13 +16,17 @@
 
 var should = require("should");
 var sortNode = require("../../../../nodes/core/logic/18-sort.js");
-var helper = require("../../helper.js");
+var helper = require("node-red-node-test-helper");
 var RED = require("../../../../red/red.js");
 
 describe('SORT node', function() {
 
     before(function(done) {
         helper.startServer(done);
+    });
+
+    after(function(done) {
+        helper.stopServer(done);
     });
 
     afterEach(function() {
@@ -209,8 +213,6 @@ describe('SORT node', function() {
             check_sort1C(flow, "$substring(payload,1)", data_in, data_out, done);
         });
     })();
-
-    return;
     
     (function() {
         var flow = [{id:"n1", type:"sort", order:"descending", as_num:false, wires:[["n2"]]},
@@ -246,8 +248,6 @@ describe('SORT node', function() {
             n1.receive(msg1);
         });
     });
-
-    return;
     
     it('should handle too many pending messages', function(done) {
         var flow = [{id:"n1", type:"sort", order:"ascending", as_num:false, target:"payload", targetType:"seq", seqKey:"payload", seqKeyType:"msg", wires:[["n2"]]},
